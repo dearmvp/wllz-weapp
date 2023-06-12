@@ -1,0 +1,49 @@
+<!-- pages/friend/details/index.wxml -->
+<wxs module="filters" src="./filter.wxs"></wxs>
+<ui-sys title="亲友详情">
+  <view class="ui-container">
+    <view class="radius-lg bg-red-gradient my-4 p-4 flex-column justify-center">
+      <view class="flex justify-between">
+        <view class="text-white text-xxl text-bold">{{friend.name}}</view>
+        <text class="_icon-edit text-white text-xxl" bind:tap="onEditClick"></text>
+      </view>
+      <view class="flex justify-center align-end text-white my-4">
+        <text class="text-xxl pr-2 text-price">{{happyTotal-sadTotal}}</text>
+        <text class="text-lg">(收支差)</text>
+      </view>
+      <view class="flex justify-around align-center margin-top-xl text-white">
+        <view class="text-center">
+          <view class="text-lg">{{happyTotal}}</view>
+          <view>收礼({{happyCount}})</view>
+        </view>
+        <view class="text-center">
+          <view class="text-lg">{{sadTotal}}</view>
+          <view>送礼({{sadCount}})</view>
+        </view>
+      </view>
+    </view>
+    <van-empty wx:if="{{giftList.length===0}}" description="还没有记录哦~"></van-empty>
+    <view class='gift-card' wx:for="{{giftList}}" wx:key="index">
+      <block wx:if="{{item.title}}">
+        <view class='content'>
+          <view class='title'>{{item.title}}</view>
+          <view class='info'>{{item.date.value}}</view>
+        </view>
+        <view class='label-out'>
+          <van-tag round type="success">送</van-tag>
+          {{item.money}}
+        </view>
+      </block>
+      <block wx:else>
+        <view class='content'>
+          <view class='title'>{{item.bookInfo.title}}</view>
+          <view class='info'>{{item.bookInfo.date.value}}</view>
+        </view>
+        <view class='label-in'>
+          <van-tag round color="#F76664">收</van-tag>
+          {{item.money}}
+        </view>
+      </block>
+    </view>
+  </view>
+</ui-sys>

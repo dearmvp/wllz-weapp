@@ -1,0 +1,8 @@
+<!--pages/start/index.wxml-->
+<ui-sys bg="bg-pink-light" loading="{{false}}">
+	<view class="ui-container flex-column flex-center" style="height: 90vh;">
+		<ui-avatar ui="sl ellipse" src="/static/logo.jpg" />
+		<!-- 网络错误 -->
+		<van-empty class="mt-6" wx:if="{{netError}}" image="network" description="暂停服务" />
+	</view>
+</ui-sys>
