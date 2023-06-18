@@ -37,6 +37,10 @@
           </view>
         </view>
       </view>
+      <van-row>
+		<van-divider contentPosition="center">{{friendTotal}}个亲友</van-divider>
+	</van-row>
     </van-index-bar>
+    
   </view>
 </ui-sys>
