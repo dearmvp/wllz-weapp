@@ -7,6 +7,7 @@ Page({
   data: {
     scrollTop: 0,
     friendsList: [],
+    friendTotal: 0,
     keyword: ''
   },
   // 监听用户滑动页面事件。
@@ -93,6 +94,7 @@ Page({
       })
       this.setData({
         friendsList: list,
+        friendTotal: res.data.length,
       });
     }
   },

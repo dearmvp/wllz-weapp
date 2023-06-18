@@ -9,11 +9,12 @@
         </view>
 
         <view class="paragraph" style="text-indent: 2em;">
-            
+            小程序最初用户是家人，仅为满足家人需要，利用业余时间对开源程序做的二次开发。
+            随着功能的完善，逐渐身边的亲朋好友也在使用，并提了很多改进建议。
         </view>
 
         <view class="paragraph" style="text-indent: 2em;">
-            
+            基于以上出发点和原始用户属性，因此在不受客观因素的影响下，本小程序<span class="text-red">会一直运行并不断优化完善功能</span>。希望各位不曾相识的用户放心使用，并提出宝贵建议。
         </view>
 
         <ui-menu ui="mt-5 radius-lg">
