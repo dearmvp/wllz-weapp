@@ -25,7 +25,7 @@
             </view>
 
             <view wx:if="{{data.happyTotal == data.sadTotal}}">
-                <view class="text-df text-grey"></view>
+                <view class="text-df text-grey">不差钱</view>
             </view>
             <view wx:if="{{data.happyTotal > data.sadTotal}}">
                 <view class="text-df text-red">差他{{data.happyTotal - data.sadTotal}}元</view>
