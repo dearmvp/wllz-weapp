@@ -3,13 +3,11 @@
 	<view class="ui-container">
 		<ui-form ui="ui-BG my-3 radius-lg">
 			<ui-form-group title="日期" isAction icon="cicon-time">
-				<ui-input-box>
-					<picker mode="date" value="{{date}}" start="1990-09-01" end="2099-09-01" bindchange="bindDateChange">
-						<view class="picker">
-							 {{date.value==null?'请选择日期':date.value}}
-						</view>
-					</picker>
-				</ui-input-box>
+				<picker mode="date" value="{{date}}" start="1990-09-01" end="2099-09-01" bindchange="bindDateChange">
+					<ui-input-box>
+						<input class="ui-input-wrapper picker" placeholder="请选择日期" model:value="{{ date.value }}" disabled/>
+					</ui-input-box>
+				</picker>
 			</ui-form-group>
 			<ui-form-group title="名称" icon="cicon-book">
 				<ui-input-box>
