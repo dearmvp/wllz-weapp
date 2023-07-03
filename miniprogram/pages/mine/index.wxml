@@ -25,7 +25,7 @@
 					<view class="ui-TC-2 text-sm">送礼</view>
 				</view>
 			</view>
-			<!-- <view class="ui-grid ui-cols-4 py-3">
+			<view class="ui-grid ui-cols-4 py-3">
 				<block wx:key="index" wx:for="{{menus}}">
 					<navigator class="ui-item" url="{{item.path}}">
 						<view>
@@ -36,7 +36,7 @@
 						</view>
 					</navigator>
 				</block>
-			</view> -->
+			</view>
 		</view>
 
 		<ui-menu ui="mt-4 radius-lg">
