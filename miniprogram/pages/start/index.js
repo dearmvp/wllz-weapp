@@ -13,7 +13,14 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {},
+  onLoad(options) {
+		 //获取分享人信息
+		 if (options.shareUserId) {
+			 userService.updateUserScore({
+					shareUserId:options.shareUserId
+			})
+		 }
+	},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -42,8 +49,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  async onShow() {
-    app.needRefreshTotal = true
+  async onShow(options) {
+		app.needRefreshTotal = true
 
     if (!app.userInfo || !app.userDataScope) {
       await this.initUserInfo()

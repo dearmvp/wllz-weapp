@@ -201,9 +201,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+		const userInfo = app.userInfo
     return {
       title: '往来礼账记录您的每笔人情账',
-      path: "pages/start/index",
+      path: "pages/start/index?shareUserId="+userInfo._id,
       imageUrl: '/static/img/share.jpg'
     }
   }

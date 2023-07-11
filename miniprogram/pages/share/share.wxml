@@ -1,0 +1,7 @@
+<!--pages/share/share.wxml-->
+<ui-sys tabbar>
+	<ui-navbar back="{{false}}" isSlot opacity scrollTop="{{scrollTop}}">
+		<view class="flex-center flex-sub" wx:if="{{scrollTop > sys_navBar}}">我的</view>
+	</ui-navbar>
+	<ui-swiper info="{{swiperList}}" dotCur="ui-BG-Main" bind:uiTap="swiperTap"/>
+</ui-sys>
