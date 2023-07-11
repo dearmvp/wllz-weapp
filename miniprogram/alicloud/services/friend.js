@@ -134,7 +134,9 @@ exports.addFriend = async (parameter) => {
             name: parameter.name.trim(),
             firstLetter: pinyin.getFirstLetter(parameter.name.substr(0, 1)),
             relation: parameter.relation,
-            remarks: parameter.remarks
+            remarks: parameter.remarks,
+            happyTotal: 0,
+            sadTotal: 0,
         })
         return {
             success: true,

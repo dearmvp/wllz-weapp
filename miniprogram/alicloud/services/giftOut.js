@@ -134,6 +134,8 @@ exports.addGiftOut = async (parameter) => {
                     userId: userInfo._id,
                     name: parameter.friendName,
                     firstLetter: pinyin.getFirstLetter(parameter.friendName.substr(0, 1)),
+                    happyTotal: 0,
+                    sadTotal: 0,
                 })
                 // 新添加的亲友id
                 parameter.friendId = newFriend.insertedId
