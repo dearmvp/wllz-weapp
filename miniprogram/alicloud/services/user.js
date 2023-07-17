@@ -157,7 +157,7 @@ exports.updateUserScore = async (parameter) => {
 			//查找用户是否已分享多次分享记1次
 			let {
 				result: userShare
-			} = await db.collection('userShare').findOne({
+			} = await db.collection('user_share').findOne({
 				userId: userInfo._id,
 				shareUserId: parameter.shareUserId
 			})
@@ -170,7 +170,7 @@ exports.updateUserScore = async (parameter) => {
 						updateTIme: new Date()
 					}
 				})
-				await db.collection('userShare').insertOne({
+				await db.collection('user_share').insertOne({
 					userId: app.userInfo._id,
 					shareUserId: parameter.shareUserId,
 					createTime: new Date(),
