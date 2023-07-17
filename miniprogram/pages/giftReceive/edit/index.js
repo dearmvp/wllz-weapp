@@ -60,7 +60,8 @@ Page({
           content: '添加成功,是否继续添加？',
           success (res) {
             if (res.confirm) {
-              console.log('用户点击确定')
+              eventChannel.emit('refresh')
+              app.needRefreshTotal = true
               that.setData({
                 friendId: '',
                 friendName: '',
@@ -69,7 +70,6 @@ Page({
                 isDisabled: false,
                })
             } else if (res.cancel) {
-              console.log('用户点击取消')
               eventChannel.emit('refresh')
               app.needRefreshTotal = true
               setTimeout(() => {
