@@ -166,7 +166,7 @@ exports.updateUserScore = async (parameter) => {
 					_id: parameter.shareUserId
 				}, {
 					$set: {
-						score: Number(user.score) + 3,
+						score: Number(user.score == null ? 0 : user.score) + 3,
 						updateTIme: new Date()
 					}
 				})

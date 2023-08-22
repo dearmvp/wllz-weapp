@@ -50,8 +50,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   async onShow(options) {
-		app.needRefreshTotal = true
-
     if (!app.userInfo || !app.userDataScope) {
       await this.initUserInfo()
       await this.initUserDataScope()
@@ -61,11 +59,20 @@ Page({
       if (!this.data.netError) {
         wx.switchTab({
           url: '/pages/index/index'
-        })
+        });
+        app.refreshTotal();
       }
     }, 1500)
   },
-
+  onRetry() {
+    this.setData({
+        netError: true,
+      });
+    // 小程序重启
+    wx.reLaunch({
+      url: "/pages/start/index",
+    });
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */
