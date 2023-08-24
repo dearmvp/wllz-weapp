@@ -38,6 +38,7 @@
 				</block>
 			</view>
 		</view>
+		<view  bindtap="navigateToURL" data-url="{{item['url']}}" data-myid="{{item['id']}}" wx:for="{{Arr}}" wx:key="*this">使用说明</view>
 
 		<ui-menu ui="mt-4 radius-lg">
 			<ui-menu-item arrow title="在线客服" icon="cicon-service ui-TC-Main" open-type="contact" />

@@ -20,7 +20,8 @@
     "pages/set/index",
     "pages/relationship/index",
     "pages/calendar/index",
-    "pages/share/share"
+    "pages/share/share",
+    "pages/article/article"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -50,6 +50,12 @@ Page({
 				path: "/pages/relationship/index"
 			}
 		],
+		Arr: [{
+			id: "1",
+			name: "使用说明",
+			url: "https://mp.weixin.qq.com/s?__biz=MzAxODExNzA3MQ==&mid=2451929867&idx=1&sn=446aa0b54b86887e4192c994318bad99&chksm=8c0ae3abbb7d6abd5696843f65387a6604d74b2823d55a56d77c9091a754c43551e90f056939#rd"
+		}
+	],
 	},
 	// 监听用户滑动页面事件。
 	onPageScroll(e) {
@@ -207,5 +213,14 @@ Page({
       path: "pages/start/index?shareUserId="+userInfo._id,
       imageUrl: '/static/img/share.jpg'
     }
-  }
+	},
+	  //跳转公众号
+ 
+		navigateToURL(e) {
+			let navigateURL = e.currentTarget.dataset.url;
+			let id = e.currentTarget.dataset.myid;
+			wx.navigateTo({
+				url: '../article/article?url=' + navigateURL 
+			})
+		}
 })
