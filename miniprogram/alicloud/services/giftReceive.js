@@ -64,7 +64,8 @@ exports.getGiftReceivePage = async (parameter) => {
             },
             {
                 $sort: {
-                    money: -1
+                    "updateTime": -1,
+                    "_id": -1
                 }
             },
             {
@@ -109,6 +110,7 @@ exports.addGiftReceive = async (parameter) => {
     const db = app.mpserverless.db;
     const userInfo = app.userInfo
     const dataScope = app.userDataScope
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         // 参数中没有亲友id
         if (!parameter.friendId) {
@@ -135,6 +137,8 @@ exports.addGiftReceive = async (parameter) => {
                     firstLetter: pinyin.getFirstLetter(parameter.friendName.substr(0, 1)),
                     happyTotal: 0,
                     sadTotal: 0,
+                    createTime: currentTime,
+                    updateTime: currentTime,
                 })
                 // 新添加的亲友id
                 parameter.friendId = newFriend.insertedId
@@ -148,30 +152,36 @@ exports.addGiftReceive = async (parameter) => {
             friendId: parameter.friendId,
             bookId: parameter.bookId,
             money: Number(parameter.money),
-            remarks: parameter.remarks
+            remarks: parameter.remarks,
+            createTime: currentTime,
+            updateTime: currentTime,
         })
 
         //获取全部收礼金额
         const {
             result: happyTotalMap
-        } = await db.collection('gift_receive').aggregate([
-            {$match:{friendId: parameter.friendId}},
+        } = await db.collection('gift_receive').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
             {
-                $group : {
-                    _id : "$friendId", 
-                    happyTotal : {
-                        $sum : '$money'
+                $group: {
+                    _id: "$friendId",
+                    happyTotal: {
+                        $sum: '$money'
                     }
-                 }
+                }
             }
-            ])
+        ])
 
-            //更新收礼金额
-          await db.collection('friend').updateOne({
+        //更新收礼金额
+        await db.collection('friend').updateOne({
             _id: parameter.friendId
         }, {
             $set: {
-                happyTotal: Number(happyTotalMap[0].happyTotal)
+                happyTotal: Number(happyTotalMap[0].happyTotal),
+                updateTime: currentTime,
             }
         })
 
@@ -194,6 +204,7 @@ exports.addGiftReceive = async (parameter) => {
  */
 exports.updateGiftReceive = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('gift_receive').updateOne({
             _id: parameter._id
@@ -202,31 +213,45 @@ exports.updateGiftReceive = async (parameter) => {
                 friendId: parameter.friendId,
                 bookId: parameter.bookId,
                 money: Number(parameter.money),
-                remarks: parameter.remarks
+                remarks: parameter.remarks,
+                updateTime: currentTime,
+            }
+        })
+        //修改亲友姓名
+        await db.collection('friend').updateOne({
+            _id: parameter.friendId
+        }, {
+            $set: {
+                name: parameter.friendName.trim(),
+                updateTime: currentTime,
             }
         })
 
         //获取全部收礼金额
         const {
             result: happyTotalMap
-        } = await db.collection('gift_receive').aggregate([
-            {$match:{friendId: parameter.friendId}},
+        } = await db.collection('gift_receive').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
             {
-                $group : {
-                    _id : "$friendId", 
-                    happyTotal : {
-                        $sum : '$money'
+                $group: {
+                    _id: "$friendId",
+                    happyTotal: {
+                        $sum: '$money'
                     }
-                 }
+                }
             }
-            ])
+        ])
 
-            //更新收礼金额
-          await db.collection('friend').updateOne({
+        //更新收礼金额
+        await db.collection('friend').updateOne({
             _id: parameter.friendId
         }, {
             $set: {
-                happyTotal: Number(happyTotalMap[0].happyTotal)
+                happyTotal: Number(happyTotalMap[0].happyTotal),
+                updateTime: currentTime,
             }
         })
 
@@ -249,10 +274,40 @@ exports.updateGiftReceive = async (parameter) => {
  */
 exports.deleteGiftReceive = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('gift_receive').deleteOne({
             _id: parameter._id
         })
+
+        //获取全部收礼金额
+        const {
+            result: happyTotalMap
+        } = await db.collection('gift_receive').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
+            {
+                $group: {
+                    _id: "$friendId",
+                    happyTotal: {
+                        $sum: '$money'
+                    }
+                }
+            }
+        ])
+
+        //更新收礼金额
+        await db.collection('friend').updateOne({
+            _id: parameter.friendId
+        }, {
+            $set: {
+                happyTotal: happyTotalMap.length == 0 ? 0 : Number(happyTotalMap[0].happyTotal),
+                updateTime: currentTime,
+            }
+        })
+
         return {
             success: true,
             data: ''

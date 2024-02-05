@@ -15,7 +15,7 @@
 
 		<!-- 我的服务 -->
 		<view class="ui-BG radius-lg">
-			<view class="ui-grid ui-cols-2 py-4">
+			<!-- <view class="ui-grid ui-cols-2 py-4">
 				<view class="ui-item border-right">
 					<view class="ui-TC text-xxl text-bold">{{totalGift.receiveTotal}}</view>
 					<view class="ui-TC-2 text-sm">收礼</view>
@@ -24,7 +24,7 @@
 					<view class="ui-TC text-xxl text-bold">{{totalGift.outTotal}}</view>
 					<view class="ui-TC-2 text-sm">送礼</view>
 				</view>
-			</view>
+			</view> -->
 			<view class="ui-grid ui-cols-4 py-3">
 				<block wx:key="index" wx:for="{{menus}}">
 					<navigator class="ui-item" url="{{item.path}}">
@@ -38,7 +38,6 @@
 				</block>
 			</view>
 		</view>
-		<view  bindtap="navigateToURL" data-url="{{item['url']}}" data-myid="{{item['id']}}" wx:for="{{Arr}}" wx:key="*this">使用说明</view>
 
 		<ui-menu ui="mt-4 radius-lg">
 			<ui-menu-item arrow title="在线客服" icon="cicon-service ui-TC-Main" open-type="contact" />

@@ -64,8 +64,24 @@ exports.getGiftOutPage = async (parameter) => {
                 }
             },
             {
-                $sort: {
-                    date: -1
+                "$addFields": {
+                    "sort": {
+                        "$cond": {
+                            "if": "$updateTime",
+                            "then": "$updateTime",
+                            "else": "$date.value"
+                        }
+                    }
+                }
+            },
+            {
+                "$sort": {
+                    "sort": -1,"_id": -1
+                }
+            },
+            {
+                "$project": {
+                    "sort": 0
                 }
             },
             {
@@ -110,6 +126,7 @@ exports.addGiftOut = async (parameter) => {
     const userInfo = app.userInfo
     const db = app.mpserverless.db;
     const dataScope = app.userDataScope
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         // 参数中没有亲友id，添加先
         if (!parameter.friendId) {
@@ -136,6 +153,8 @@ exports.addGiftOut = async (parameter) => {
                     firstLetter: pinyin.getFirstLetter(parameter.friendName.substr(0, 1)),
                     happyTotal: 0,
                     sadTotal: 0,
+                    createTime: currentTime,
+                    updateTime: currentTime,
                 })
                 // 新添加的亲友id
                 parameter.friendId = newFriend.insertedId
@@ -151,30 +170,36 @@ exports.addGiftOut = async (parameter) => {
             icon: parameter.icon,
             date: parameter.date,
             money: Number(parameter.money),
-            remarks: parameter.remarks
+            remarks: parameter.remarks,
+            createTime: currentTime,
+            updateTime: currentTime,
         })
 
         //获取全部送礼金额
         const {
             result: sadTotalMap
-        } = await db.collection('gift_out').aggregate([
-            {$match:{friendId: parameter.friendId}},
+        } = await db.collection('gift_out').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
             {
-                $group : {
-                    _id : "$friendId", 
-                    sadTotal : {
-                        $sum : '$money'
+                $group: {
+                    _id: "$friendId",
+                    sadTotal: {
+                        $sum: '$money'
                     }
-                 }
+                }
             }
-            ])
+        ])
 
-             //更新送礼金额
-          await db.collection('friend').updateOne({
+        //更新送礼金额
+        await db.collection('friend').updateOne({
             _id: parameter.friendId
         }, {
             $set: {
-                sadTotal: Number(sadTotalMap[0].sadTotal)
+                sadTotal: Number(sadTotalMap[0].sadTotal),
+                updateTime: currentTime,
             }
         })
 
@@ -197,6 +222,7 @@ exports.addGiftOut = async (parameter) => {
  */
 exports.updateGiftOut = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('gift_out').updateOne({
             _id: parameter._id
@@ -207,30 +233,43 @@ exports.updateGiftOut = async (parameter) => {
                 icon: parameter.icon,
                 date: parameter.date,
                 money: Number(parameter.money),
-                remarks: parameter.remarks
+                remarks: parameter.remarks,
+                updateTime: currentTime,
             }
         })
-
-        //获取全部送礼金额
-        const {
-            result: sadTotalMap
-        } = await db.collection('gift_out').aggregate([
-            {$match:{friendId: parameter.friendId}},
-            {
-                $group : {
-                    _id : "$friendId", 
-                    sadTotal : {
-                        $sum : '$money'
-                    }
-                 }
-            }
-            ])
-        //更新送礼金额
-          await db.collection('friend').updateOne({
+        //修改亲友姓名
+        await db.collection('friend').updateOne({
             _id: parameter.friendId
         }, {
             $set: {
-                sadTotal: Number(sadTotalMap[0].sadTotal)
+                name: parameter.friendName.trim(),
+                updateTime: currentTime,
+            }
+        })
+        //获取全部送礼金额
+        const {
+            result: sadTotalMap
+        } = await db.collection('gift_out').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
+            {
+                $group: {
+                    _id: "$friendId",
+                    sadTotal: {
+                        $sum: '$money'
+                    }
+                }
+            }
+        ])
+        //更新送礼金额
+        await db.collection('friend').updateOne({
+            _id: parameter.friendId
+        }, {
+            $set: {
+                sadTotal: Number(sadTotalMap[0].sadTotal),
+                updateTime: currentTime,
             }
         })
 
@@ -253,10 +292,40 @@ exports.updateGiftOut = async (parameter) => {
  */
 exports.deleteGiftOut = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('gift_out').deleteOne({
             _id: parameter._id
         })
+
+        //获取全部送礼金额
+        const {
+            result: sadTotalMap
+        } = await db.collection('gift_out').aggregate([{
+                $match: {
+                    friendId: parameter.friendId
+                }
+            },
+            {
+                $group: {
+                    _id: "$friendId",
+                    sadTotal: {
+                        $sum: '$money'
+                    }
+                }
+            }
+        ])
+
+        //更新送礼金额
+        await db.collection('friend').updateOne({
+            _id: parameter.friendId
+        }, {
+            $set: {
+                sadTotal: sadTotalMap.length == 0 ? 0 : Number(sadTotalMap[0].sadTotal),
+                updateTime: currentTime,
+            }
+        })
+
         return {
             success: true,
             data: ''

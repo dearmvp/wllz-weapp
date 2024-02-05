@@ -58,9 +58,9 @@ Page({
     setTimeout(() => {
       if (!this.data.netError) {
         wx.switchTab({
-          url: '/pages/index/index'
+          url: '/pages/newIndex/newIndex'
         });
-        app.refreshTotal();
+        //app.refreshTotal();
       }
     }, 1500)
   },

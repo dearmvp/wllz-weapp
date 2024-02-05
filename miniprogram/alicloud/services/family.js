@@ -78,13 +78,16 @@ exports.getFamilyInfo = async () => {
 exports.addFamily = async (parameter) => {
     const userInfo = app.userInfo
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         // 添加家庭
         const {
             result
         } = await db.collection('family').insertOne({
             userId: userInfo._id,
-            name: parameter.name
+            name: parameter.name,
+            createTime: currentTime,
+            updateTime: currentTime,
         })
         //  新增的记录 _id
         const _Id = result.insertedId
@@ -94,6 +97,8 @@ exports.addFamily = async (parameter) => {
             userId: userInfo._id,
             familyId: _Id,
             relation: '管理员',
+            createTime: currentTime,
+            updateTime: currentTime,
         })
 
         return {
@@ -115,13 +120,15 @@ exports.addFamily = async (parameter) => {
  */
 exports.updateFamily = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         // 更新家庭
         await db.collection('family').updateOne({
             _id: parameter._id
         }, {
             $set: {
-                name: parameter.name
+                name: parameter.name,
+                updateTime: currentTime,
             }
         })
 
@@ -173,11 +180,14 @@ exports.deleteFamily = async (parameter) => {
 exports.joinFamily = async (parameter) => {
     const userInfo = app.userInfo
     const db = app.mpserverless.db
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('family_member').insertOne({
             userId: userInfo._id,
             familyId: parameter.familyId,
             relation: parameter.relation,
+            createTime: currentTime,
+            updateTime: currentTime,
         })
 
         return {

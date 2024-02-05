@@ -4,223 +4,210 @@ const giftOutService = require('../../alicloud/services/giftOut')
 const giftReceiveService = require('../../alicloud/services/giftReceive')
 
 import {
-	welcome
+    welcome
 } from '../../utils/index.js'
 const app = getApp();
 Page({
-	/**
-	 * 页面的初始数据
-	 */
-	data: {
-		scrollTop: 0,
-		jinrishici: '',
-		avatarUrl: '',
-		nickName: '',
-		avatarUrl_edit: '',
-		nickName_edit: '',
-		popupVisible: false,
-		confirmLoading: false,
-		welcome: welcome(),
-		totalGift: {
-			receiveTotal: '',
-			outTotal: ''
-		},
-		menus: [{
-				icon: "cicon-home-community",
-				name: "我的家庭",
-				color: "text-mauve",
-				path: "/pages/family/index"
-			},
-			{
-				icon: "cicon-event-list",
-				name: "数据导出",
-				color: "text-orange",
-				path: "/pages/backup/index"
-			},
-			{
-				icon: "cicon-demo",
-				name: "统计分析",
-				color: "text-red",
-				path: "/pages/analysis/index"
-			},
-			{
-				icon: "cicon-person-pin-circle-o",
-				name: "亲友关系",
-				color: "text-green",
-				path: "/pages/relationship/index"
-			}
-		],
-		Arr: [{
-			id: "1",
-			name: "使用说明",
-			url: "https://mp.weixin.qq.com/s?__biz=MzAxODExNzA3MQ==&mid=2451929867&idx=1&sn=446aa0b54b86887e4192c994318bad99&chksm=8c0ae3abbb7d6abd5696843f65387a6604d74b2823d55a56d77c9091a754c43551e90f056939#rd"
-		}
-	],
-	},
-	// 监听用户滑动页面事件。
-	onPageScroll(e) {
-		// 注意：请只在需要的时候才在 page 中定义此方法，不要定义空方法。以减少不必要的事件派发对渲染层-逻辑层通信的影响。
-		// 注意：请避免在 onPageScroll 中过于频繁的执行 setData 等引起逻辑层-渲染层通信的操作。尤其是每次传输大量数据，会影响通信耗时。
-		// https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onPageScroll-Object-object
-		this.setData({
-			scrollTop: e.scrollTop
-		})
-	},
-	tapToUrl(e) {
-		wx.navigateTo({
-			url: e.currentTarget.dataset.url
-		})
-	},
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
-	onLoad: function (options) {
-		jinrishici.load(result => {
-			this.setData({
-				jinrishici: result.data.content,
-			})
-		})
-		this.setData({
-			avatarUrl: app.userInfo.avatarUrl,
-			nickName: app.userInfo.nickName,
-		})
-	},
-	// 选择头像
-	onChooseAvatar(e) {
-		const {
-			avatarUrl
-		} = e.detail
-		const options = {
-			filePath: avatarUrl,
-		};
+    /**
+     * 页面的初始数据
+     */
+    data: {
+        scrollTop: 0,
+        jinrishici: '',
+        avatarUrl: '',
+        nickName: '',
+        avatarUrl_edit: '',
+        nickName_edit: '',
+        popupVisible: false,
+        confirmLoading: false,
+        welcome: welcome(),
+        totalGift: {
+            receiveTotal: '',
+            outTotal: ''
+        },
+        menus: [{
+                icon: "cicon-home-community",
+                name: "家庭共享",
+                color: "text-mauve",
+                path: "/pages/family/index"
+            },
+            {
+                icon: "cicon-event-list",
+                name: "使用说明",
+                color: "text-orange",
+                path: "/pages/article/article"
+            },
+            {
+                icon: "cicon-demo",
+                name: "联系方式",
+                color: "text-red",
+                path: "/pages/contact/contact"
+            },
+            {
+                icon: "cicon-person-pin-circle-o",
+                name: "亲友关系",
+                color: "text-green",
+                path: "/pages/relationship/index"
+            }
+        ],
 
-		app.mpserverless.file.uploadFile(options).then(res => {
-			console.log(res)
-			this.setData({
-				avatarUrl_edit: res.fileUrl
-			})
-		});
-	},
-	onShowPopup() {
-		this.setData({
-			popupVisible: true,
-			avatarUrl_edit: app.userInfo.avatarUrl,
-			nickName_edit: app.userInfo.nickName,
-		})
-	},
-	onClosePopup() {
-		this.setData({
-			popupVisible: false
-		})
-	},
-	// 保存个人信息
-	async onSaveProfile() {
-		this.setData({
-			confirmLoading: true
-		})
+    },
+    // 监听用户滑动页面事件。
+    onPageScroll(e) {
+        // 注意：请只在需要的时候才在 page 中定义此方法，不要定义空方法。以减少不必要的事件派发对渲染层-逻辑层通信的影响。
+        // 注意：请避免在 onPageScroll 中过于频繁的执行 setData 等引起逻辑层-渲染层通信的操作。尤其是每次传输大量数据，会影响通信耗时。
+        // https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onPageScroll-Object-object
+        this.setData({
+            scrollTop: e.scrollTop
+        })
+    },
+    tapToUrl(e) {
+        wx.navigateTo({
+            url: e.currentTarget.dataset.url
+        })
+    },
+    /**
+     * 生命周期函数--监听页面加载
+     */
+    onLoad: function (options) {
+        jinrishici.load(result => {
+            this.setData({
+                jinrishici: result.data.content,
+            })
+        })
+        this.setData({
+            avatarUrl: app.userInfo.avatarUrl,
+            nickName: app.userInfo.nickName,
+        })
+    },
+    // 选择头像
+    onChooseAvatar(e) {
+        const {
+            avatarUrl
+        } = e.detail
+        const options = {
+            filePath: avatarUrl,
+        };
 
-		const avatarUrl = this.data.avatarUrl_edit
-		const nickName = this.data.nickName_edit
+        app.mpserverless.file.uploadFile(options).then(res => {
+            console.log(res)
+            this.setData({
+                avatarUrl_edit: res.fileUrl
+            })
+        });
+    },
+    onShowPopup() {
+        this.setData({
+            popupVisible: true,
+            avatarUrl_edit: app.userInfo.avatarUrl,
+            nickName_edit: app.userInfo.nickName,
+        })
+    },
+    onClosePopup() {
+        this.setData({
+            popupVisible: false
+        })
+    },
+    // 保存个人信息
+    async onSaveProfile() {
+        this.setData({
+            confirmLoading: true
+        })
 
-		const res = await userService.updateUserInfo({
-			_id: app.userInfo._id,
-			nickName: nickName,
-			avatarUrl: avatarUrl,
-		})
+        const avatarUrl = this.data.avatarUrl_edit
+        const nickName = this.data.nickName_edit
 
-		setTimeout(() => {
-			if (res.success) {
-				wx.showToast({
-					title: '更新成功',
-				})
+        const res = await userService.updateUserInfo({
+            _id: app.userInfo._id,
+            nickName: nickName,
+            avatarUrl: avatarUrl,
+        })
 
-				this.setData({
-					avatarUrl: avatarUrl,
-					nickName: nickName,
-					popupVisible: false,
-					confirmLoading: false
-				})
-				app.userInfo.nickName = nickName
-				app.userInfo.avatarUrl = avatarUrl
-			} else {
-				wx.showToast({
-					title: res.message,
-					icon: "none"
-				})
-				this.setData({
-					confirmLoading: false
-				})
-			}
-		}, 600);
-	},
-	async getGiftTotal() {
-		const {
-			data: rTotal
-		} = await giftReceiveService.computedTotalGiftReceive()
-		const {
-			data: oTotal
-		} = await giftOutService.computedTotalGiftOut()
-		this.setData({
-			totalGift: {
-				receiveTotal: rTotal || 0,
-				outTotal: oTotal || 0
-			}
-		})
-	},
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady: function () {},
+        setTimeout(() => {
+            if (res.success) {
+                wx.showToast({
+                    title: '更新成功',
+                })
 
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	async onShow() {
-		// 是否需要刷新统计数据
-		if (app.needRefreshTotal) {
-			this.getGiftTotal()
-			app.needRefreshTotal = false
-		}
-	},
+                this.setData({
+                    avatarUrl: avatarUrl,
+                    nickName: nickName,
+                    popupVisible: false,
+                    confirmLoading: false
+                })
+                app.userInfo.nickName = nickName
+                app.userInfo.avatarUrl = avatarUrl
+            } else {
+                wx.showToast({
+                    title: res.message,
+                    icon: "none"
+                })
+                this.setData({
+                    confirmLoading: false
+                })
+            }
+        }, 600);
+    },
+    async getGiftTotal() {
+        const {
+            data: rTotal
+        } = await giftReceiveService.computedTotalGiftReceive()
+        const {
+            data: oTotal
+        } = await giftOutService.computedTotalGiftOut()
+        this.setData({
+            totalGift: {
+                receiveTotal: rTotal || 0,
+                outTotal: oTotal || 0
+            }
+        })
+    },
+    /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+    onReady: function () {},
 
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide: function () {},
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    async onShow() {
+        // 是否需要刷新统计数据
+        if (app.needRefreshTotal) {
+            this.getGiftTotal()
+            app.needRefreshTotal = false
+        }
+    },
 
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload: function () {},
+    /**
+     * 生命周期函数--监听页面隐藏
+     */
+    onHide: function () {},
 
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh: function () {},
+    /**
+     * 生命周期函数--监听页面卸载
+     */
+    onUnload: function () {},
 
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom: function () {},
+    /**
+     * 页面相关事件处理函数--监听用户下拉动作
+     */
+    onPullDownRefresh: function () {},
 
-	/**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-		const userInfo = app.userInfo
-    return {
-      title: '往来礼账记录您的每笔人情账',
-      path: "pages/start/index?shareUserId="+userInfo._id,
-      imageUrl: '/static/img/share.jpg'
-    }
-	},
-	  //跳转公众号
- 
-		navigateToURL(e) {
-			let navigateURL = e.currentTarget.dataset.url;
-			let id = e.currentTarget.dataset.myid;
-			wx.navigateTo({
-				url: '../article/article?url=' + navigateURL 
-			})
-		}
+    /**
+     * 页面上拉触底事件的处理函数
+     */
+    onReachBottom: function () {},
+
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
+        const userInfo = app.userInfo
+        return {
+            title: '往来礼账记录您的每笔人情账',
+            path: "pages/start/index?shareUserId=" + userInfo._id,
+            imageUrl: '/static/img/share.jpg'
+        }
+    },
+
 })

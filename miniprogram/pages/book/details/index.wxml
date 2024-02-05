@@ -1,28 +1,29 @@
 <!--pages/book/details/index.wxml-->
 <wxs module="tools" src="../../../utils/tools.wxs"></wxs>
 <ui-sys title="{{book.title}}">
-	<ui-fixed bg="bg-blur" sticky>
-		<van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" use-action-slot bind:change="onSearch" shape="round">
-			<view slot="action" bind:tap="onAddGift" class="flex">
-				<view class="round _icon-add-round-o text-{{tools.bookColor(book.title)}}" style="font-size: 56rpx;" />
-			</view>
-		</van-search>
-	</ui-fixed>
-	<view class="ui-container">
-		<van-empty wx:if="{{giftList.length==0}}" description="还没有记录哦~"></van-empty>
+    <ui-fixed bg="bg-blur" sticky>
+        <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" use-action-slot bind:change="onSearch" shape="round">
+            <view slot="action" bind:tap="onAddGift" class="flex">
+                <view class="round _icon-add-round-o text-{{tools.bookColor(book.title)}}" style="font-size: 56rpx;" />
+            </view>
+        </van-search>
+    </ui-fixed>
+    <view class="ui-container">
+        <van-empty wx:if="{{giftList.length==0}}" description="还没有记录哦~"></van-empty>
 
-		<view wx:for="{{giftList}}" wx:key="index" bindtap="onGiftClick" data-gift='{{item}}'>
-			<view class="ui-BG radius-lg flex justify-around align-center py-4 my-3 text-{{tools.bookColor(book.title)}}">
-				<view class="text-left">
-					<text class="text-xl">{{item.friendInfo.name}}</text>
-					<view class="text-sm mt-2">{{item.friendInfo.relation}}</view>
-				</view>
+        <view wx:for="{{giftList}}" wx:key="index" bindtap="onGiftClick" data-gift='{{item}}'>
+            <view class="ui-BG radius-lg flex justify-around align-center py-4 my-3 text-{{tools.bookColor(book.title)}}">
+                <view class="text-left">
+                    <text class="text-xl">{{item.friendInfo.name}}</text>
+                    <!-- <view>{{item._id}}-{{item.updateTime}}</view> -->
+                    <view class="text-sm mt-2">{{item.friendInfo.relation}}</view>
+                </view>
 
-				<view class="text-right">
-					<view class="text-xxl"> {{item.money}} </view>
-					<view class="text-sm mt-2">礼金</view>
-				</view>
-			</view>
-		</view>
-	</view>
+                <view class="text-right">
+                    <view class="text-xxl"> {{item.money}}元</view>
+                    <view class="text-sm mt-2">{{item.remarks}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
 </ui-sys>

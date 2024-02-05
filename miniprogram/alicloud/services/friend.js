@@ -1,27 +1,86 @@
 import pinyin from "wl-pinyin";
 const app = getApp();
-
 /**
  * 获取全部亲友数据集合
  *
  * @author chadwuo
  */
+// exports.getFriendList = async () => {
+//     const db = app.mpserverless.db;
+//     const dataScope = app.userDataScope
+//     try {
+//         const {
+//             result
+//         } = await db.collection('friend').find({
+//             userId: {
+//                 $in: dataScope
+//             }
+//         })
+
+//         return {
+//             success: true,
+//             data: result
+//         };
+//     } catch (error) {
+//         return {
+//             success: false,
+//             message: error,
+//         }
+//     }
+// };
+
+
 exports.getFriendList = async () => {
     const db = app.mpserverless.db;
     const dataScope = app.userDataScope
     try {
-        const {
-            result
-        } = await db.collection('friend').find({
-            userId: {
-                $in: dataScope
+        const pageSize = 100;
+        let minId = {
+            $minKey: 1
+        };
+        var result = [];
+        const collection = db.collection('friend');
+        while (true) {
+            const query = {
+                _id: {
+                    $gt: minId
+                },
+                userId: {
+                    $in: dataScope
+                }
+            };
+            const options = {
+                limit: pageSize,
+                sort: {
+                    _id: 1
+                },
+            };
+            const findResult = await collection.find(query, options);
+            const {
+                affectedDocs,
+                success
+            } = findResult;
+            if (!success) {
+                throw new Error("find return success false");
             }
-        })
+            if (affectedDocs > 0) {
+                const data = findResult.result;
+                const lastDoc = data[data.length - 1];
+                minId = lastDoc._id;
 
+                data.forEach(function (element) {
+                    result.push(element);
+                });
+
+            } else {
+                break;
+            }
+        }
         return {
             success: true,
             data: result
         };
+
     } catch (error) {
         return {
             success: false,
@@ -84,7 +143,8 @@ exports.getFriendGifts = async (parameter) => {
             },
             {
                 $sort: {
-                    date: -1
+                    updateTime: -1,
+                    _id: -1
                 }
             },
             {
@@ -126,6 +186,7 @@ exports.getFriendGifts = async (parameter) => {
 exports.addFriend = async (parameter) => {
     const userInfo = app.userInfo
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         const {
             result
@@ -137,6 +198,8 @@ exports.addFriend = async (parameter) => {
             remarks: parameter.remarks,
             happyTotal: 0,
             sadTotal: 0,
+            createTime: currentTime,
+            updateTime: currentTime,
         })
         return {
             success: true,
@@ -157,6 +220,7 @@ exports.addFriend = async (parameter) => {
  */
 exports.updateFriend = async (parameter) => {
     const db = app.mpserverless.db;
+    const currentTime = app.colorUISdk.isDate.formatTime(new Date());
     try {
         await db.collection('friend').updateOne({
             _id: parameter._id
@@ -165,7 +229,8 @@ exports.updateFriend = async (parameter) => {
                 name: parameter.name.trim(),
                 firstLetter: pinyin.getFirstLetter(parameter.name.substr(0, 1)),
                 relation: parameter.relation,
-                remarks: parameter.remarks
+                remarks: parameter.remarks,
+                updateTime: currentTime,
             }
         })
         return {

@@ -10,19 +10,26 @@ export const colorUI = new ColorUI({
         shareTitle: '往来礼账记录您的每笔人情账',
         homePath: '/pages/start/index',
         tabBar: [{
-            title: '礼薄',
+            title: '首页',
             icon: 'cicon-home-o',
             curIcon: 'cicon-home',
-            url: '/pages/index/index',
+            url: '/pages/newIndex/newIndex',
             type: 'tab'
         },
-        {
-            title: '送礼',
-            icon: 'cicon-redpacket-o',
-            curIcon: 'cicon-redpacket',
-            url: '/pages/giftOut/index',
-            type: 'tab'
-        },
+        // {
+        //     title: '礼薄',
+        //     icon: 'cicon-home-o',
+        //     curIcon: 'cicon-home',
+        //     url: '/pages/index/index',
+        //     type: 'tab'
+        // },
+        // {
+        //     title: '送礼',
+        //     icon: 'cicon-redpacket-o',
+        //     curIcon: 'cicon-redpacket',
+        //     url: '/pages/giftOut/index',
+        //     type: 'tab'
+        // },
         {
             title: '亲友',
             icon: 'cicon-accounts-o',

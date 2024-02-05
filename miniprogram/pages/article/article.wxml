@@ -1,1 +1,1 @@
-<web-view src="{{url}}"> </web-view>
+<web-view src="{{article[0].url}}"> </web-view>

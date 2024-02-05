@@ -72,6 +72,7 @@ Page({
 		if (this.data._id) {
 			const res = await giftOutService.updateGiftOut(this.data)
 			if (res.success) {
+				wx.setStorageSync("friend_load_flag", true)
 				wx.showToast({
 					title: '修改成功',
 				})
@@ -84,6 +85,7 @@ Page({
 		} else {
 			const res = await giftOutService.addGiftOut(this.data)
 			if (res.success) {
+				wx.setStorageSync("friend_load_flag", true)
 				wx.showToast({
 					title: '添加成功',
 				})
@@ -105,6 +107,7 @@ Page({
 				if (res.confirm) {
 					const result = await giftOutService.deleteGiftOut(delData)
 					if (result.success) {
+						wx.setStorageSync("friend_load_flag", true)
 						wx.showToast({
 							title: '删除成功',
 						})

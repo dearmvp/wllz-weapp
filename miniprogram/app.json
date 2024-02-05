@@ -21,7 +21,11 @@
     "pages/relationship/index",
     "pages/calendar/index",
     "pages/share/share",
-    "pages/article/article"
+    "pages/article/article",
+    "pages/donate/donate",
+    "pages/contact/contact",
+    "pages/newIndex/newIndex",
+    "pages/book/select/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,6 +40,10 @@
     "borderStyle": "white",
     "backgroundColor": "#fff",
     "list": [
+      {
+        "pagePath": "pages/newIndex/newIndex",
+        "text": ""
+      },
       {
         "pagePath": "pages/index/index",
         "text": ""
@@ -99,6 +107,16 @@
     "van-notice-bar": "@vant/weapp/notice-bar/index",
     "van-search": "@vant/weapp/search/index",
     "van-popup": "@vant/weapp/popup/index",
-    "van-divider": "@vant/weapp/divider/index"
+    "van-divider": "@vant/weapp/divider/index",
+    "ui-fixed-tools": "/mp-cu/colorUI/components/ui-fixed-tools/ui-fixed-tools",
+    "van-card": "@vant/weapp/card/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-overlay": "@vant/weapp/overlay/index",
+    "van-sticky": "@vant/weapp/sticky/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index"
   }
 }

@@ -1,0 +1,50 @@
+<ui-sys title="选择礼薄" footer="{{false}}">
+    <!-- <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearch" shape="round" /> -->
+    <!-- <view class="ui-container">
+        <van-empty wx:if="{{friendSelectSource.length===0}}" description="还没有记录哦~" />
+        <van-index-bar highlight-color="#F76664">
+            <view wx:for="{{friendSelectSource}}" wx:key="index">
+                <van-index-anchor index="{{item.alpha}}" />
+                <view class="ui-menu radius-lg mb-3">
+                    <view class="ui-menu-item" wx:for="{{item.subItems}}" wx:for-item="data" wx:key="dataindex" bindtap="onSelectedFriend" data-friend='{{data}}'>
+                        <view class="block py-3">
+                            <view class="text-lg">{{data.name}}</view>
+                            <view class="ui-TC-3 mt-2">{{data.relation}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </van-index-bar>
+    </view> -->
+
+    <view>
+        <van-empty wx:if="{{giftBooks.length===0}}" description="还没有记录哦~" />
+        <block wx:for="{{giftBooks}}" wx:key="index">
+            <view class="p-3" bindtap="onSelectedBook" data-book='{{item}}'>
+                <van-cell center label="{{ item.date.value }} {{ item.date.lunar_month }}{{ item.date.lunar_day }}">
+                    <view slot="title">
+                        <view class="van-cell-text">{{ item.title||'' }}</view>
+                        <van-tag type="danger">礼薄</van-tag>
+                    </view>
+                    <view slot="">
+                        <view class="text-red">{{ item.giftTotal||'0' }}元/{{ item.giftCount||0 }} 笔</view>
+                    </view>
+                    <!-- <view slot="icon">
+                        <van-icon name="chat-o" color="#ee0a24" size="50px"/>
+                    </view> -->
+                </van-cell>
+            </view>
+        </block>
+
+        <block>
+            <view class="p-3" bind:tap="onAddBook">
+                <view class="flex-column flex-center" style="height: 100%;width: 100%;">
+                    <text class="_icon-add text-xsl text-grey" />
+                    <view class="text-sm text-grey mt-3">
+                        添加礼簿
+                    </view>
+                </view>
+            </view>
+        </block>
+    </view>
+</ui-sys>

@@ -1,0 +1,92 @@
+<ui-sys img="/static/img/bg.png" tabbar>
+    <!-- 遮照层 -->
+    <van-overlay show="{{ overlayshow }}" bind:click="onClickHide" />
+    <!-- 导航 -->
+    <ui-navbar back="{{false}}" isSlot opacity scrollTop="{{scrollTop}}"></ui-navbar>
+    <!-- 滚动图 -->
+    <ui-swiper info="{{swiperList}}" dotStyle="line" dotCur="ui-BG-Main" bind:uiTap="swiperTap" />
+
+    <ui-fixed sticky="{{true}}" scrollTop="{{scrollTop}}">
+        <!-- 悬浮工具栏 -->
+        <ui-fixed-tools show="{{uiFixedToolsShow}}" data="{{list}}" isIcon="{{isIcon}}" scrollTop="{{scrollTop}}" bind:tapBar="tapToolsBar" bind:tapShow="tapToolShow" />
+    </ui-fixed>
+
+    <view class="ui-BG radius-sm">
+        <view class="ui-grid ui-cols-2 py-4">
+            <view class="ui-item border-right">
+                <view class="ui-TC text-xxl text-bold">{{totalGift.outTotal}}元</view>
+                <view class="ui-TC-2 text-sm">送礼
+                    <!--(111 笔)-->
+                </view>
+            </view>
+
+            <view class="ui-item border-left">
+                <view class="ui-TC text-xxl text-bold">{{totalGift.receiveTotal}}元</view>
+                <view class="ui-TC-2 text-sm">收礼
+                    <!--(222 笔)-->
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <ui-tab sticky="{{true}}" value="{{active}}" tab="{{[{name:'送礼',icon:'cicon-skip-previous text-red'},{name:'收礼',icon:'cicon-skip-next text-red'}]}}" ui="radius" bind:change="tabChange" />
+
+    <view class='content-wrapper' wx:if='{{navCur == "送礼"}}'>
+        <view wx:for="{{giftList}}" wx:key="index" bindtap="onGiftClick" data-gift='{{item}}'>
+            <view class="p-3">
+                <van-cell center label="{{item.date.value}} {{ item.date.lunar_month }}{{ item.date.lunar_day }}">
+                    <view slot="title">
+                        <view class="van-cell-text">{{item.friendInfo.name}}</view>
+                        <van-tag color="{{item.icon!='iconfont icon-sangzang'?'#ffe1e1':'text-grey'}}" text-color="{{item.icon!='iconfont icon-sangzang'?'#ad0000':'text-grey'}}">{{item.title}}</van-tag>
+                    </view>
+                    <view slot="">
+                        <view class="{{item.icon!='iconfont icon-sangzang'?'text-red':'text-grey'}}">{{item.money}}元</view>
+                    </view>
+                    <!-- <view slot="icon">
+                    <ui-avatar ui="round xxl" bg="{{item.icon!='iconfont icon-sangzang'?'bg-red-thin':'bg-grey'}}"><text class="text-xxl {{item.icon||'cicon-moneybag-o'}}"></text></ui-avatar>
+                </view> -->
+                </van-cell>
+            </view>
+        </view>
+    </view>
+
+    <block wx:if='{{navCur == "收礼"}}'>
+        <view>
+            <block wx:for="{{giftBooks}}" wx:key="index">
+                <view class="p-3" bind:tap="onBookClick" bind:longpress="onBookLongPress" data-book='{{item}}'>
+                    <van-cell center label="{{ item.date.value }} {{ item.date.lunar_month }}{{ item.date.lunar_day }}">
+                        <view slot="title">
+                            <view class="van-cell-text">{{ item.title||'' }}</view>
+                            <van-tag type="danger">礼薄</van-tag>
+                            <block wx:if='{{currentUser._id != item.userId}}'>
+                                <van-tag type="warning" class="px-3">共享</van-tag>
+                            </block>
+                        </view>
+                        <view slot="">
+                            <view class="text-red">{{ item.giftTotal||'0' }}元/{{ item.giftCount||0 }} 笔</view>
+                        </view>
+                        <!-- <view slot="icon">
+                        <van-icon name="chat-o" color="#ee0a24" size="50px"/>
+                    </view> -->
+                    </van-cell>
+                </view>
+            </block>
+
+            <block>
+                <view class="p-3" bind:tap="onAddBook">
+                    <view class="flex-column flex-center" style="height: 100%;width: 100%;">
+                        <text class="_icon-add text-xsl text-grey" />
+                        <view class="text-sm text-grey mt-3">
+                            添加礼簿
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+
+        <!-- 长按动作 -->
+        <van-action-sheet show="{{ showBookAction }}" actions="{{ bookActions }}" bind:close="onCloseBookAction" bind:cancel="onCloseBookAction" bind:select="onSelectBookAction" cancel-text="取消" close-on-click-overlay />
+
+    </block>
+
+</ui-sys>

@@ -1,46 +1,47 @@
 <!-- pages/friend/index.wxml -->
 <ui-sys img="/static/img/bg.png" tabbar>
-  <ui-navbar back="{{false}}" isSlot opacity scrollTop="{{scrollTop}}">
-    <view class="px-3 pb-2 flex-bar">
-      <view class="round _icon-add-round-o ui-TC-Main" style="font-size: 56rpx;" bindtap="onAdd" />
-      <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearch" shape="round" wx:if="{{scrollTop > sys_navBar}}" />
-    </view>
-  </ui-navbar>
-  <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearch" shape="round" />
-
-  <view class="ui-container">
-    <van-empty wx:if="{{friendsList.length===0}}" description="还没有记录哦~" />
-    <van-index-bar highlight-color="#F76664">
-      <view wx:for="{{friendsList}}" wx:key="index">
-
-      <view wx:if="{{item.subItems.length > 0}}">
-        <van-index-anchor index="{{item.alpha}}" />
-      </view>
-        
-        <view class="ui-menu radius-lg mb-3">
-          <view class="ui-menu-item" bindtap="onFriendClick" wx:for="{{item.subItems}}" wx:for-item="data" wx:key="dataindex" data-friend='{{data}}'>
-            <view class="block py-3">
-              <view class="text-lg">{{data.name}}</view>
-              <view class="ui-TC-3 mt-2">{{data.relation}}</view>
-            </view>
-
-            <view wx:if="{{data.happyTotal == data.sadTotal}}">
-                <view class="text-df text-grey">不差钱</view>
-            </view>
-            <view wx:if="{{data.happyTotal > data.sadTotal}}">
-                <view class="text-df text-red">差他{{data.happyTotal - data.sadTotal}}元</view>
-            </view>
-            <view wx:if="{{data.happyTotal < data.sadTotal}}">
-                <view class="text-df text-green">差我{{data.sadTotal - data.happyTotal}}元</view>
-            </view>
-            
-          </view>
+    <ui-navbar back="{{false}}" isSlot opacity scrollTop="{{scrollTop}}">
+        <view class="px-3 pb-2 flex-bar">
+            <view class="round _icon-add-round-o ui-TC-Main" style="font-size: 56rpx;" bindtap="onAdd" />
+            <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearch" shape="round" wx:if="{{scrollTop > sys_navBar}}" />
         </view>
-      </view>
-      <van-row>
-		<van-divider contentPosition="center">{{friendTotal}}个亲友</van-divider>
-	</van-row>
-    </van-index-bar>
-    
-  </view>
+    </ui-navbar>
+    <van-search background="transparent" model:value="{{ keyword }}" placeholder="请输入搜索关键词" bind:change="onSearch" shape="round" />
+
+    <view class="ui-container">
+        <van-empty wx:if="{{friendsList.length===0}}" description="还没有记录哦~" />
+        <van-index-bar highlight-color="#F76664">
+            <view wx:for="{{friendsList}}" wx:key="index">
+
+                <view wx:if="{{item.subItems.length > 0}}">
+                    <van-index-anchor index="{{item.alpha}}" />
+                </view>
+
+                <view class="ui-menu radius-lg mb-3">
+                    <view class="ui-menu-item" bindtap="onFriendClick" wx:for="{{item.subItems}}" wx:for-item="data" wx:key="dataindex" data-friend='{{data}}'>
+                        <view class="block py-3">
+                            <view class="text-lg">{{data.name}}
+                            </view>
+                            <view class="ui-TC-3 mt-2">{{data.remarks}} {{data.relation}}</view>
+                        </view>
+
+                        <view wx:if="{{data.happyTotal == data.sadTotal}}">
+                            <view class="text-df text-grey">不差钱</view>
+                        </view>
+                        <view wx:if="{{data.happyTotal > data.sadTotal}}">
+                            <view class="text-df text-red">差他{{data.happyTotal - data.sadTotal}}元</view>
+                        </view>
+                        <view wx:if="{{data.happyTotal < data.sadTotal}}">
+                            <view class="text-df text-green">差我{{data.sadTotal - data.happyTotal}}元</view>
+                        </view>
+
+                    </view>
+                </view>
+            </view>
+            <van-row>
+                <van-divider contentPosition="center">{{friendTotal}}个亲友</van-divider>
+            </van-row>
+        </van-index-bar>
+
+    </view>
 </ui-sys>
